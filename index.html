@@ -6,28 +6,89 @@
   <title>Safwan, Zayan, Steve and Sahiem's Website</title>
   <style>
     :root {
-      color-scheme: light;
+      --bg-primary: #d8dde3;
+      --bg-card: white;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e5e7eb;
       font-family: Arial, Helvetica, sans-serif;
-      color: #1f2937;
-      background: #d8dde3;
+    }
+
+    /* 1. AUTOMATIC DARK MODE: Adapts instantly to the device's system settings */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg-primary: #111827;
+        --bg-card: #1f2937;
+        --text-main: #f9fafb;
+        --text-muted: #d1d5db;
+        --accent: #3b82f6;
+        --accent-hover: #60a5fa;
+        --border: #374151;
+      }
+    }
+
+    /* Forces dark theme if explicitly toggled by user */
+    [data-theme="dark"] {
+      --bg-primary: #111827;
+      --bg-card: #1f2937;
+      --text-main: #f9fafb;
+      --text-muted: #d1d5db;
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --border: #374151;
+    }
+
+    /* Forces light theme if explicitly toggled by user */
+    [data-theme="light"] {
+      --bg-primary: #d8dde3;
+      --bg-card: white;
+      --text-main: #1f2937;
+      --text-muted: #4b5563;
+      --accent: #2563eb;
+      --accent-hover: #1d4ed8;
+      --border: #e5e7eb;
     }
 
     * {
       box-sizing: border-box;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
       min-height: 100vh;
+      background: var(--bg-primary);
+      color: var(--text-main);
     }
 
     header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 1rem 8%;
-      background: white;
-      border-bottom: 1px solid #e5e7eb;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
     }
 
     nav {
@@ -36,25 +97,66 @@
     }
 
     nav a {
-      color: #374151;
+      color: var(--text-main);
       text-decoration: none;
       font-weight: 600;
     }
 
     nav a:hover {
-      color: #2563eb;
+      color: var(--accent);
+    }
+
+    .theme-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .theme-btn:hover {
+      background: var(--bg-primary);
+    }
+
+    /* 2. MOBILE HAMBURGER MENU STYLES */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    .menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: var(--text-main);
+      border-radius: 3px;
+      transition: 0.3s;
     }
 
     main {
-      display: grid;
-      place-items: center;
-      min-height: calc(100vh - 73px);
-      padding: 2rem;
-      text-align: center;
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    section {
-      max-width: 650px;
+    .hero {
+      display: grid;
+      place-items: center;
+      text-align: center;
+      min-height: 70vh;
+      padding-bottom: 2rem;
+    }
+
+    .hero-content {
+      max-width: 750px;
     }
 
     h1 {
@@ -64,43 +166,270 @@
 
     p {
       margin: 0 0 1.5rem;
-      color: #4b5563;
+      color: var(--text-muted);
       font-size: 1.125rem;
       line-height: 1.7;
     }
 
-    button {
+    .btn {
       border: 0;
       border-radius: 999px;
-      padding: 0.8rem 1.4rem;
-      background: #2563eb;
+      padding: 0.8rem 1.6rem;
+      background: var(--accent);
       color: white;
       font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    button:hover {
-      background: #1d4ed8;
+    .btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin: 4rem 0 2rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 50px;
+      height: 4px;
+      background: var(--accent);
+      margin: 0.5rem auto 0;
+      border-radius: 2px;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .card-avatar {
+      width: 80px;
+      height: 80px;
+      background: var(--bg-primary);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .card h3 {
+      margin: 0 0 0.5rem 0;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    .counter-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      margin: 3rem auto;
+      max-width: 400px;
+    }
+
+    .counter-value {
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin: 0.5rem 0;
+    }
+
+    .contact-form {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2.5rem;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      background: var(--bg-primary);
+      color: var(--text-main);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: 2px solid var(--accent);
+    }
+
+    /* 3. SCROLL TO TOP BUTTON STYLES */
+    .scroll-top-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+      z-index: 99;
+    }
+
+    .scroll-top-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .scroll-top-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-3px);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 4rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* RESPONSIVE LAYOUT (Mobile adjustments) */
+    @media (max-width: 768px) {
+      header {
+        padding: 1rem 5%;
+      }
+
+      .menu-toggle {
+        display: flex;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-card);
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+        gap: 1rem;
+        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      /* Animated hamburger effect when open */
+      .menu-toggle.active span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+      }
+      .menu-toggle.active span:nth-child(2) {
+        opacity: 0;
+      }
+      .menu-toggle.active span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+      }
     }
   </style>
 </head>
 <body>
+
   <header>
-    <strong>My Website</strong>
-    <nav aria-label="Main navigation">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <div class="logo">SZSS Team</div>
+    <div class="nav-container">
+      <nav id="navMenu" aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#about">About Us</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <button class="theme-btn" id="themeToggle" type="button" aria-label="Toggle dark mode">Theme</button>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
   </header>
 
-  <main id="home">
-    <section>
-      <h1>Welcome</h1>
-      <p>This is a simple website built with HTML and CSS.</p>
-      <button type="button" onclick="alert('Hello User!')">Get Started</button>
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Safwan, Zayan, Steve & Sahiem</h1>
+        <p>Welcome to our collaborative digital workspace. We build clean, responsive, and highly interactive modern web experiences.</p>
+        <a href="#about" class="btn">Meet the Team</a>
+      </div>
     </section>
-  </main>
-</body>
-</html>
+
+    <section id="about">
+      <h2 class="section-title">About Our Team</h2>
+      <p style="text-align: center; max-width: 700px; margin: 0 auto 2rem;">We are a group of creators and developers focused on bringing clean code and creative layout solutions together.</p>
+      
+      <div class="team-grid">
+        <div class="card">
+          <div class="card-avatar">Sa</div>
+          <h3>Safwan</h3>
+          <p>Frontend Architecture & Interface Engineering</p>
+        </div>
+        <div class="card">
+          <div class="card-avatar">Za</div>
+          <h3>Zayan</h3>
+          <p>UX Research & Visual Experience Design</p>
+        </div>
+        <div class="card">
+          <div class="card-avatar">St</div>
+          <h3>Steve</h3>
+          <p>Full-Stack Logic & Systems Development</p>
+        </div>
+        <div class="card">
